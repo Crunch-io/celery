@@ -31,6 +31,7 @@ class test_MongoBackend(AppCase):
         'mongodb://uuuu:pwpw@hostname.dom,'
         'hostname.dom/database?replicaSet=rs'
     )
+    srv_url = 'mongodb+srv://hostname.dom/database'
     sanitized_default_url = 'mongodb://uuuu:**@hostname.dom/database'
     sanitized_replica_set_url = (
         'mongodb://uuuu:**@hostname.dom/,'
@@ -113,6 +114,20 @@ class test_MongoBackend(AppCase):
 
         with patch('pymongo.MongoClient') as mock_Connection:
             mongodb_uri = 'mongodb://%s:%d' % (MONGODB_HOST, MONGODB_PORT)
+            self.backend._connection = None
+            self.backend.host = mongodb_uri
+
+            mock_Connection.return_value = sentinel.connection
+
+            connection = self.backend._get_connection()
+            mock_Connection.assert_called_once_with(
+                host=mongodb_uri, **self.backend._prepare_client_options()
+            )
+            self.assertEqual(sentinel.connection, connection)
+
+    def test_get_connection_no_connection_mongodb_srv_url(self):
+        with patch('pymongo.MongoClient') as mock_Connection:
+            mongodb_uri = self.srv_url
             self.backend._connection = None
             self.backend.host = mongodb_uri
 

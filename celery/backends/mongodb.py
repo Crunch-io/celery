@@ -120,8 +120,7 @@ class MongoBackend(BaseBackend):
             # This enables the use of replica sets and sharding.
             # See pymongo.Connection() for more info.
             url = self.host
-            if isinstance(url, string_t) \
-                    and not url.startswith('mongodb://'):
+            if isinstance(url, string_t) and '://' not in url:
                 url = 'mongodb://{0}:{1}'.format(url, self.port)
             if url == 'mongodb://':
                 url = url + 'localhost'
