@@ -62,7 +62,12 @@ def get_backend_by_url(backend=None, loader=None):
         url = backend
         scheme, _, _ = url.partition('://')
         if '+' in scheme:
-            backend, url = url.split('+', 1)
+            if scheme.startswith('mongodb+'):
+                # e.g., mongodb+srv://
+                backend = url.split('+', 1)[0]
+            else:
+                # e.g., sqla+mongodb
+                backend, url = url.split('+', 1)
         else:
             backend = scheme
     return get_backend_cls(backend, loader), url

@@ -6,6 +6,7 @@ import uuid
 from pickle import loads, dumps
 
 from celery import states
+from celery import backends
 from celery.backends import mongodb as module
 from celery.backends.mongodb import MongoBackend, pymongo
 from celery.exceptions import ImproperlyConfigured
@@ -55,6 +56,20 @@ class test_MongoBackend(AppCase):
         MongoBackend.decode = self._reset['decode']
         module.Binary = self._reset['Binary']
         datetime.datetime = self._reset['datetime']
+
+    def test_get_backend_by_url(self):
+        expects = [('mongodb://', MongoBackend),
+                   ('mongodb+srv://', MongoBackend)]
+
+        for expect_url, expect_cls in expects:
+            backend, url = backends.get_backend_by_url(expect_url,
+                self.app.loader)
+            self.assertIsInstance(
+                backend(app=self.app, url=url),
+                expect_cls,
+            )
+            assert url.startswith(expect_url), \
+                "{0} doesn't start with {1}".format(url, expect_url)
 
     def test_init_no_mongodb(self):
         prev, module.pymongo = module.pymongo, None
