@@ -184,7 +184,7 @@ if is_setuptools:
 
 setup(
     name=NAME,
-    version=meta['VERSION'],
+    version=meta['VERSION'] + '+crunch3',
     description=meta['doc'],
     author=meta['author'],
     author_email=meta['contact'],
