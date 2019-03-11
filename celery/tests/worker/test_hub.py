@@ -1,8 +1,8 @@
 from __future__ import absolute_import
 
-from kombu.async import Hub, READ, WRITE, ERR
-from kombu.async.debug import callback_for, repr_flag, _rcb
-from kombu.async.semaphore import DummyLock, LaxBoundedSemaphore
+from kombu.async_ import Hub, READ, WRITE, ERR
+from kombu.async_.debug import callback_for, repr_flag, _rcb
+from kombu.async_.semaphore import DummyLock, LaxBoundedSemaphore
 
 from celery.five import range
 from celery.tests.case import Case, Mock, call, patch

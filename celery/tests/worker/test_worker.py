@@ -1096,7 +1096,7 @@ class test_WorkController(AppCase):
         pool.create(w)
 
     def test_Pool_create(self):
-        from kombu.async.semaphore import LaxBoundedSemaphore
+        from kombu.async_.semaphore import LaxBoundedSemaphore
         w = Mock()
         w._conninfo.connection_errors = w._conninfo.channel_errors = ()
         w.hub = Mock()
