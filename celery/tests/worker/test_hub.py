@@ -138,7 +138,7 @@ class test_Hub(Case):
         self.assertEqual(_rcb(f), f.__name__)
         self.assertEqual(_rcb('foo'), 'foo')
 
-    @patch('kombu.async.hub.poll')
+    @patch('kombu.async_.hub.poll')
     def test_start_stop(self, poll):
         hub = Hub()
         poll.assert_called_with()
@@ -197,7 +197,7 @@ class test_Hub(Case):
 
         eback.side_effect = ValueError('foo')
         hub.scheduler = iter([(0, eback)])
-        with patch('kombu.async.hub.logger') as logger:
+        with patch('kombu.async_.hub.logger') as logger:
             with self.assertRaises(StopIteration):
                 hub.fire_timers()
             self.assertTrue(logger.error.called)
