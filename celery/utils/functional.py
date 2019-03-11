@@ -82,7 +82,7 @@ class LRUCache(UserDict):
         return iter(self.data)
 
     def _iterate_items(self, _need_lock=IS_PYPY):
-        with self.mutex if _need_lock else DummyContext():
+        with self.mutex:
             for k in self:
                 try:
                     yield (k, self.data[k])
@@ -91,7 +91,7 @@ class LRUCache(UserDict):
     iteritems = _iterate_items
 
     def _iterate_values(self, _need_lock=IS_PYPY):
-        with self.mutex if _need_lock else DummyContext():
+        with self.mutex:
             for k in self:
                 try:
                     yield self.data[k]
@@ -102,7 +102,7 @@ class LRUCache(UserDict):
 
     def _iterate_keys(self):
         # userdict.keys in py3k calls __getitem__
-        return keys(self.data)
+        return list(keys(self.data))
     iterkeys = _iterate_keys
 
     def incr(self, key, delta=1):
