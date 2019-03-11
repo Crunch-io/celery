@@ -347,7 +347,7 @@ class test_asynloop(AppCase):
         x = X(self.app)
 
         def Gen():
-            raise StopIteration()
+            return
             yield
         gen = Gen()
         x.hub.add_writer(6, gen)

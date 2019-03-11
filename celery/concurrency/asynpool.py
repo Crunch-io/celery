@@ -831,7 +831,7 @@ class AsynPool(_pool.Pool):
                         errors += 1
                         if errors > 100:
                             on_not_recovering(proc, fd, job, exc)
-                            raise StopIteration()
+                            return
                         yield
                     else:
                         errors = 0
@@ -847,7 +847,7 @@ class AsynPool(_pool.Pool):
                         errors += 1
                         if errors > 100:
                             on_not_recovering(proc, fd, job, exc)
-                            raise StopIteration()
+                            return
                         yield
                     else:
                         errors = 0
@@ -881,7 +881,7 @@ class AsynPool(_pool.Pool):
                 except KeyError:
                     # process died, we can safely discard the ack at this
                     # point.
-                    raise StopIteration()
+                    return
                 send = proc.send_syn_offset
 
                 Hw = Bw = 0
